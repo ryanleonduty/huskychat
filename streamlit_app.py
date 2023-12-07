@@ -3,11 +3,11 @@ from hugchat import hugchat
 from hugchat.login import Login
 
 # App title
-st.set_page_config(page_title="Husky Chat 🐺")
+st.set_page_config(page_title="🐺 HuskyChat")
 
 # Hugging Face Credentials
 with st.sidebar:
-    st.title('Husky Chat 🐺')
+    st.title('🐺 HuskyChat')
     if ('EMAIL' in st.secrets) and ('PASS' in st.secrets):
         st.success('HuggingFace Login credentials already provided!', icon='✅')
         hf_email = st.secrets['EMAIL']
