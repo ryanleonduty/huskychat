@@ -3,11 +3,11 @@ from hugchat import hugchat
 from hugchat.login import Login
 
 # App title
-st.set_page_config(page_title="🤗💬 HugChat")
+st.set_page_config(page_title="Husky Chat 🐺")
 
 # Hugging Face Credentials
 with st.sidebar:
-    st.title('🤗💬 HugChat')
+    st.title('Husky Chat 🐺')
     if ('EMAIL' in st.secrets) and ('PASS' in st.secrets):
         st.success('HuggingFace Login credentials already provided!', icon='✅')
         hf_email = st.secrets['EMAIL']
@@ -16,11 +16,15 @@ with st.sidebar:
         hf_email = st.text_input('Enter E-mail:', type='password')
         hf_pass = st.text_input('Enter password:', type='password')
         if not (hf_email and hf_pass):
-            st.warning('Please enter your credentials!', icon='⚠️')
+            st.warning('Please enter your credentials!', icon='👀')
         else:
-            st.success('Proceed to entering your prompt message!', icon='👉')
+            st.success('Proceed to entering your prompt message!', icon='💁‍♂️')
+    # Reset conversation
+    clear_button = st.sidebar.button("Clear Conversation", on_click=lambda: st.session_state.messages.clear())
+    if clear_button:
+        st.session_state.messages = [{"role": "assistant", "content": "How may I help you?"}]
     st.markdown('📖 Learn how to build this app in this [blog](https://blog.streamlit.io/how-to-build-an-llm-powered-chatbot-with-streamlit/)!')
-    
+
 # Store LLM generated responses
 if "messages" not in st.session_state.keys():
     st.session_state.messages = [{"role": "assistant", "content": "How may I help you?"}]
@@ -46,10 +50,11 @@ if prompt := st.chat_input(disabled=not (hf_email and hf_pass)):
         st.write(prompt)
 
 # Generate a new response if last message is not from assistant
-if st.session_state.messages[-1]["role"] != "assistant":
+if  st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
             response = generate_response(prompt, hf_email, hf_pass) 
             st.write(response) 
     message = {"role": "assistant", "content": response}
     st.session_state.messages.append(message)
+
